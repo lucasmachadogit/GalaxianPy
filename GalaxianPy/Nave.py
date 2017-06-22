@@ -1,25 +1,26 @@
 import pygame
 from pygame.locals import *
+from Tiro import Tiro
 
 pygame.init()
 
 class Nave(object):
 	def __init__(self):
 		try:
-			self.__nave = pygame.image.load('nave/nave.png')
-			self.tiro = pygame.image.load('nave/tiro.png')
+			self.nave = pygame.image.load('nave/nave.png')
 		except IOError:
 			print("Não foi possível carregar a nave!!")
 		
-		self.rect = self.tiro.get_rect()
-		self.rect.top = 0
-		self.rect.left = 0
-		self.__velocidade = 5
+		self.__velocidade = 10
+		self.lista_disparo = []
 	
 	def getNave(self):
-		return self.__nave
+		return self.nave
 	
 	def getVelocidade(self):
-		return self.__velocidade		
-	
+		return self.__velocidade
+
+	def disparar(self, x, y):
+		tiro = Tiro(x, y)
+		self.lista_disparo.append(tiro)
 		

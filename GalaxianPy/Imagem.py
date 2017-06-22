@@ -4,7 +4,7 @@ from pygame.locals import *
 
 pygame.init()
 
-class Imagem():
+class Imagem(object):
 	def __init__(self):
 		try:
 			self.__fundo1 = pygame.image.load('images/PlanoFundo1.png').convert()

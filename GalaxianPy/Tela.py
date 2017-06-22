@@ -1,8 +1,9 @@
 import pygame
 from pygame.locals import *
+
 pygame.init()
 
-class Tela():
+class Tela(object):
 	def __init__(self):
 		self.__tela = pygame.display.set_mode((800, 600))
 		self.__fundo = (0, 0, 0)
