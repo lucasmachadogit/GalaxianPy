@@ -8,6 +8,7 @@ pygame.init()
 class Inimigo(object):
 	def __init__(self,x,y):
 		Tela.__init__(self)
+		
 		try:
 			self.__imagemInimigo1 = pygame.image.load('inimigo/inimigo1.png')
 			self.__imagemInimigo2 = pygame.image.load('inimigo/inimigo2.png')

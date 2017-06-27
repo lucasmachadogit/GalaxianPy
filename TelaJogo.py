@@ -18,7 +18,6 @@ class TelaJogo(Tela):
 		self.__start = self.__texto.render("Iniciar", True, Tela.getCorObjeto(self))
 		self.__voltar = self.__texto.render("Voltar", True, Tela.getCorObjeto(self))
 		self.__frase = self.__msg.render("Pronto para missão?", True, self.__cor)
-		self.__missao = self.__msg.render("Missão: Destruir aliens", True, self.__cor)
 
 	def escolhaJogo(self, seleciona):
 		if seleciona == 0:

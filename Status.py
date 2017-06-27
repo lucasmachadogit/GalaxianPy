@@ -17,7 +17,7 @@ class Status(Tela):
 
 		self.__pontos = self.__fonte.render("Pontos", True, Tela.getCorCreditos(self))
 		self.__tempo = self.__fonte.render("Tempo", True, Tela.getCorCreditos(self))
-		self.__municao = self.__fonte.render("Disparo", True, Tela.getCorCreditos(self))
+		self.__municao = self.__fonte.render("Disparos", True, Tela.getCorCreditos(self))
 
 		self.__cor_score = (255, 0, 0)
 

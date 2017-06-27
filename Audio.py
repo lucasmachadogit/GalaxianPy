@@ -9,6 +9,7 @@ class Audio(object):
 			self.__effect = pygame.mixer.Sound('sounds/efeito.ogg') #carrega o efeito 
 			self.__musicaMenu = pygame.mixer.Sound("sounds/musicaJogando.ogg")
 			self.__tiroNave = pygame.mixer.Sound("sounds/tiroNave.ogg")
+			self.__explosao = pygame.mixer.Sound("sounds/explosao.ogg")
 		except IOError:
 			print("Não foi possível carregar os áudios!!")
 
@@ -20,6 +21,9 @@ class Audio(object):
 
 	def paraMusicaFundo(self):
 		return self.__musicaMenu.stop() #para a música de fundo
+	
+	def explosao(self):
+		return self.__explosao.play()		 
 
 	def getTiroNave(self):
 		return self.__tiroNave.play()

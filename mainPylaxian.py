@@ -20,18 +20,6 @@ pygame.init()
 relogio = pygame.time.Clock()
 pygame.display.set_caption("Pylaxian")
 
-def doRectsOverLap(rect1, rect2):
-	for a, b in [(rect1,rect2),(rect2, rect1)] :
-		if((isPointInsideRect(a.left,a.top,b)) or (isPointInsideRect(a.left,a.bottom, b)) or (isPointInsideRect(a.right,a.top,b)) or (isPointInsideRect(a.right,a.bottom,b))):
-			return True
-	return False 
-
-def isPointInsideRect(x,y,rect):
-	if x > rect.left and x < rect.right and y > rect.top and y < rect.bottom:
-		return True
-	else:
-		return False
-
 def main():
 	
 	menu = 0 
@@ -46,6 +34,8 @@ def main():
 	pontos = 0
 	pause = None
 	quantMunicao = 30
+	jogou = False
+	
 
 	segundo = 0
 	minuto = 0
@@ -68,6 +58,10 @@ def main():
 
 	now = datetime.now()
 	dataHoje = str(now.day) + "/" + str(now.month) + "/" + str(now.year)	#Converte a data atual em string
+
+	aux_pontos = 0
+	aux_tempo = 0
+	aux_data = dataHoje
 
 	xNave, yNave = 400, (0.88 * 600)        
 	xChange = 0
@@ -126,6 +120,8 @@ def main():
 								menuEscolha = -1 #Escolhe sair
 								break
 		elif menuEscolha == 1:
+			jogou = True
+
 			tela.Fundo()
 			jogo.fundoJogo()
 			status.getPontos()
@@ -138,12 +134,6 @@ def main():
 			rectNave.top = yNave
 			rectNave.left = xNave
 			rectNave.right = xNave + 32
-
-			quantMunicao = 30
-			segundo = 0
-			minuto = 0
-			milisegundo = 0
-			pontos = 0
 
 			for evento in pygame.event.get():
 				if evento.type == QUIT:
@@ -175,6 +165,9 @@ def main():
 					if ini.rect.top > 600:
 						teste.lista_inimigo.remove(ini)
 						quantMunicao = 30
+						pontos -= 5
+						if pontos <= 0:
+							menuEscolha = 4
 
 					for x in nave.lista_disparo:
 						if x_inimigo == 200:
@@ -183,13 +176,15 @@ def main():
 						if x_inimigo == 10:
 							muda_xInimigo = -muda_xInimigo
 						
-						if doRectsOverLap(ini.rect, x.rect):
+						if ini.rect.colliderect(x.rect):
 							nave.lista_disparo.remove(x)
 							teste.lista_inimigo.remove(ini)
-							pontos += 10
+							pontos += 15
 
 					if ini.rect.colliderect(rectNave):
+						audio.explosao()
 						menuEscolha = 4
+					
 			else:
 				geraInimigos(random.randint(10, 350), 10)
 
@@ -211,11 +206,16 @@ def main():
 					x.trajetoria()
 					if x.rect.top < -1: #Tiro some
 						nave.lista_disparo.remove(x)
+
+			tempo = str(minuto) + ":" + str(segundo) + ":" + str(milisegundo)	#Converte o tempo em string
+
+			aux_pontos = pontos
+			aux_data = dataHoje
+			aux_tempo = tempo
 		elif menuEscolha == 2:
 			tela.Fundo()
 			telaMenu.fundoMenu()
 			pontuacao.blitaRanking()
-			pontuacao.buscaNoBanco()
 			pontuacao.ranking()
 			
 			for evento in pygame.event.get():
@@ -237,7 +237,21 @@ def main():
 			tela.Fundo()
 			telaMenu.telaGameOver()
 			status.statusGameOver()
+
+			if len(teste.lista_inimigo) > 0:
+				for ini in teste.lista_inimigo:
+					teste.lista_inimigo.remove(ini)
 			
+			if len(nave.lista_disparo) > 0:
+				for x in nave.lista_disparo:
+					nave.lista_disparo.remove(x)
+			
+			quantMunicao = 30
+			segundo = 0
+			minuto = 0
+			milisegundo = 0
+			pontos = 0
+
 			for evento in pygame.event.get():
 				if evento.type == pygame.KEYDOWN:
 					if evento.key == pygame.K_s:
@@ -245,11 +259,15 @@ def main():
 						menu = 0
 						break
 		else:
-			tempo = str(minuto) + ":" + str(segundo) + ":" + str(milisegundo)	#Converte o tempo em string
-			banco.salvarNoBanco(dataHoje, tempo, str(pontos))
 			sairMenu = True
 
 		pygame.display.update()
+
+	if jogou == True:
+		banco.salvarNoBanco(aux_data, aux_tempo, str(aux_pontos))
+
+	banco.fechaCursor()
+	banco.fechaBanco()
 	
 	pygame.quit()
 	sys.exit()
