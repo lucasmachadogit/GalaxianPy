@@ -15,4 +15,4 @@ Os dois arquivos comprimidos devem ser colocados dentro da pasta Pylaxian.
 
 Para executar basta abrir o terminal dentro da pasta Pylaxian e digitar:
 
-./mainPylaxian
+###./mainPylaxian
